@@ -27,7 +27,6 @@ def process_csvs(input_folder: str, output_path: str):
     for f in files:
         try:
             df = pd.read_csv(f, header=0)
-            # Estructura: columnas 0-3 son metadata, el resto son timestamps
             timestamps = df.columns[4:]
             values = df.iloc[0, 4:].values
             for ts, val in zip(timestamps, values):
@@ -35,28 +34,25 @@ def process_csvs(input_folder: str, output_path: str):
         except Exception as e:
             print(f"Error leyendo {f}: {e}")
 
-    print(f"🔄 Procesando {len(all_series):,} puntos de datos...")
+    print(f" Procesando {len(all_series):,} puntos de datos...")
 
     combined = pd.DataFrame(all_series)
 
-    # Parsear timestamps (formato: "Sun Feb 01 2026 06:11:20 GMT-0500 ...")
     combined["timestamp"] = pd.to_datetime(
         combined["timestamp"].str.replace(r" GMT.*", "", regex=True),
         format="%a %b %d %Y %H:%M:%S"
     )
 
-    # Limpiar y ordenar
+
     combined = combined.sort_values("timestamp").drop_duplicates("timestamp")
     combined["value"] = pd.to_numeric(combined["value"], errors="coerce")
     combined = combined.dropna()
 
-    # Agregar columnas derivadas útiles
     combined["hour"] = combined["timestamp"].dt.hour
     combined["date"] = combined["timestamp"].dt.date.astype(str)
     combined["weekday"] = combined["timestamp"].dt.day_name()
     combined["timestamp"] = combined["timestamp"].astype(str)
 
-    # Guardar
     combined.to_json(output_path, orient="records")
 
     print(f" Listo! {len(combined):,} puntos guardados en: {output_path}")
