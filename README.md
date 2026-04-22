@@ -31,13 +31,13 @@ cd backend
 copy .env.example .env
 ```
 
-Abre el archivo `.env` y reemplaza el valor de la variable con API key de Anthropic:
+Abrir el archivo `.env` y reemplazar el valor de la variable con API key de Anthropic:
 
 ```
 ANTHROPIC_API_KEY=sk-ant-tuKeyAqui
 ```
 
-Si no configuras la key, el chatbot funciona igual con un módulo local basado en pandas. Pero es más limitado en las preguntas que se le puede realizar.
+Si no se configura la key, el chatbot funciona igual con un módulo local basado en pandas. Pero es más limitado en las preguntas que se le puede realizar.
 
 ### 3. Volver a la raíz y levantar los contenedores
 
@@ -91,13 +91,13 @@ npm run dev
 | GET | `/api/by-day` | Promedio por día |
 | GET | `/api/by-weekday` | Promedio por día de semana |
 | GET | `/api/available-dates` | Fechas disponibles en el dataset |
-| POST | `/api/chat` | Chatbot — recibe `{ question }` |
+| POST | `/api/chat` | Chatbot, recibe `{ question }` |
 
 ---
  
 ## Reprocesar los datos originales
  
-El repositorio ya incluye `backend/data_processed.json`, el es un archivo con los 67K puntos de datos listos pya procesados, generado a partir de los 201 CSVs originales del dataset. No es necesario hacer nada adicional para que la app funcione.
+El repositorio ya incluye `backend/data_processed.json`, es un archivo con los 67K puntos de datos listos ya procesados, generado a partir de los 201 CSVs originales del dataset. No es necesario hacer nada adicional para que la app funcione.
  
 Si en algún momento se quiere regenerar ese archivo desde los CSVs originales:
  
