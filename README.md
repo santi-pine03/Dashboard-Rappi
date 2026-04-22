@@ -15,19 +15,61 @@ Dashboard web para analizar la disponibilidad histórica de tiendas en Rappi
 
 ---
 
+## Ejecutar el proyecto con Docker 
 
-## Correr el proyecto
+### 1. Clonar el repositorio
+
+```bash
+git clone https://github.com/tuUsuario/rappi-availability-dashboard.git
+cd rappi-availability-dashboard
+```
+
+### 2. Configurar la API key
+
+```bash
+cd backend
+copy .env.example .env
+```
+
+Abre el archivo `.env` y reemplaza el valor de la variable con API key de Anthropic:
+
+```
+ANTHROPIC_API_KEY=sk-ant-tuKeyAqui
+```
+
+Si no configuras la key, el chatbot funciona igual con un módulo local basado en pandas. Pero es más limitado en las preguntas que se le puede realizar.
+
+### 3. Volver a la raíz y levantar los contenedores
+
+```bash
+cd ..
+docker-compose up --build
+```
+
+- Dashboard: `http://localhost:5173`
+- API: `http://localhost:8000`
+- Documentación API: `http://localhost:8000/docs`
+
+### Reiniciar la aplicación
+
+Si se necesita reiniciar:
+
+```bash
+docker-compose down
+docker-compose up --build
+```
+
+---
+
+## Correr sin Docker
 
 ### Backend
 
 ```bash
 cd backend
 pip install -r requirements.txt
-set ANTHROPIC_API_KEY=sk-ant-tuKeyAqui   # Windows CMD
 uvicorn main:app --reload
 ```
-
-La API corre en `http://localhost:8000`. Documentación automática en `http://localhost:8000/docs`.
 
 ### Frontend
 
@@ -36,8 +78,6 @@ cd frontend
 npm install
 npm run dev
 ```
-
-El dashboard corre en `http://localhost:5173`.
 
 ---
 
@@ -54,17 +94,22 @@ El dashboard corre en `http://localhost:5173`.
 | POST | `/api/chat` | Chatbot — recibe `{ question }` |
 
 ---
-
+ 
 ## Reprocesar los datos originales
-
-Si tiene los CSVs originales, puede regenerar el `data_processed.json`:
-
+ 
+El repositorio ya incluye `backend/data_processed.json`, el es un archivo con los 67K puntos de datos listos pya procesados, generado a partir de los 201 CSVs originales del dataset. No es necesario hacer nada adicional para que la app funcione.
+ 
+Si en algún momento se quiere regenerar ese archivo desde los CSVs originales:
+ 
+1. Crear una carpeta `backend/raw_data/` y poner los CSVs ahí
+2. Correr el script de procesamiento:
 ```bash
 cd backend
 python data_loader.py --input ./raw_data --output ./data_processed.json
 ```
-
+ 
 ---
+
 
 ## Chatbot
 

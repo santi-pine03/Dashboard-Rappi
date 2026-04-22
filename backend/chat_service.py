@@ -2,6 +2,9 @@ import os
 import json
 import urllib.request
 import pandas as pd
+from dotenv import load_dotenv
+ 
+load_dotenv()
 
 ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY", "")
 
@@ -21,17 +24,24 @@ def build_context(df: pd.DataFrame) -> str:
 La métrica 'synthetic_monitoring_visible_stores' mide cuántas tiendas están online/visibles en la app de Rappi en cada momento.
 Datos del {df['timestamp'].min().strftime('%Y-%m-%d')} al {df['timestamp'].max().strftime('%Y-%m-%d')}.
 - Total puntos de datos: {len(df):,}
-- Máximo: {int(df['value'].max()):,} tiendas
-- Mínimo: {int(df['value'].min()):,} tiendas
+- Pico máximo absoluto: {int(df['value'].max()):,} tiendas (valor más alto registrado en un instante, NO es el promedio del día)
+- Mínimo absoluto: {int(df['value'].min()):,} tiendas
 - Promedio global: {int(df['value'].mean()):,} tiendas
-- Hora pico: {int(by_hour.idxmax())}:00 ({int(by_hour.max()):,} tiendas promedio)
-- Hora valle: {int(by_hour.idxmin())}:00 ({int(by_hour.min()):,} tiendas promedio)
-- Mejor día: {str(by_day.idxmax())[:10]} ({int(by_day.max()):,} tiendas)
-- Peor día: {str(by_day.idxmin())[:10]} ({int(by_day.min()):,} tiendas)
+- Hora pico: {int(by_hour.idxmax())}:00 (promedio de {int(by_hour.max()):,} tiendas en esa hora)
+- Hora de menor actividad: {int(by_hour.idxmin())}:00 (promedio de {int(by_hour.min()):,} tiendas en esa hora)
+- Día con mayor PROMEDIO diario: {str(by_day.idxmax())[:10]} ({int(by_day.max()):,} tiendas promedio ese día)
+- Día con menor PROMEDIO diario: {str(by_day.idxmin())[:10]} ({int(by_day.min()):,} tiendas promedio ese día)
+- IMPORTANTE: el promedio diario y el pico máximo son cosas distintas. El pico de {int(df['value'].max()):,} fue el valor más alto en un instante, no el promedio de un día completo.
 - Mejor día de semana: {by_weekday.idxmax()} ({int(by_weekday.max()):,} tiendas)
 - Promedio fin de semana: {int(by_weekday[['Saturday','Sunday']].mean()):,}
 - Promedio entre semana: {int(by_weekday[['Monday','Tuesday','Wednesday','Thursday','Friday']].mean()):,}
 - Promedio madrugada (0-5h): {int(df[df['hour'].between(0,5)]['value'].mean()):,}
+ 
+Promedio por día:
+{chr(10).join(f"- {str(d)[:10]}: {int(v):,} tiendas" for d, v in by_day.items())}
+ 
+Promedio por hora del día:
+{chr(10).join(f"- {int(h):02d}:00 -> {int(v):,} tiendas" for h, v in by_hour.items())}
 
 Promedio por día:
 {chr(10).join(f"- {str(d)[:10]}: {int(v):,} tiendas" for d, v in by_day.items())}
@@ -39,7 +49,8 @@ Promedio por día:
 Promedio por hora del día:
 {chr(10).join(f"- {int(h):02d}:00 -> {int(v):,} tiendas" for h, v in by_hour.items())}
 
-Responde en español, de forma concisa y directa basándote en estos datos."""
+Responde en español, de forma concisa y directa basándote en estos datos. 
+Usa texto plano, sin markdown, sin asteriscos, sin símbolos #, sin guiones como viñetas. Solo texto corrido."""
 
 
 def get_chat_response(question: str, df: pd.DataFrame) -> str:
