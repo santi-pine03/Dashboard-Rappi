@@ -1,11 +1,11 @@
 from fastapi import FastAPI, Query
 from fastapi.middleware.cors import CORSMiddleware
 
-from data_service import (
+from services.data_service import (
     load_data, get_summary, get_timeseries,
     get_by_hour, get_by_day, get_by_weekday, get_available_dates
 )
-from chat_service import get_chat_response
+from services.chat_service import get_chat_response
 
 app = FastAPI(title="Rappi Availability Dashboard API")
 

@@ -1,4 +1,4 @@
-# Rappi Store Availability Dashboard
+# Dashboard de disponibilidad de tiendas en Rappi
 
 Dashboard web para analizar la disponibilidad histórica de tiendas en Rappi
 
@@ -20,8 +20,8 @@ Dashboard web para analizar la disponibilidad histórica de tiendas en Rappi
 ### 1. Clonar el repositorio
 
 ```bash
-git clone https://github.com/tuUsuario/rappi-availability-dashboard.git
-cd rappi-availability-dashboard
+git clone https://github.com/santi-pine03/Dashboard-Rappi.git
+cd Dashboard-Rappi
 ```
 
 ### 2. Configurar la API key

@@ -33,7 +33,7 @@ export default function App() {
       {/* Header */}
       <div style={{ marginBottom: 28, borderBottom: '1px solid var(--border)', paddingBottom: 20, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-          <img src={rappiLogo} alt="Rappi" style={{ height: 40, width: 'auto', mixBlendMode: 'multiply' }} />
+          <img src={rappiLogo} alt="Rappi" style={{ height: 60, width: 'auto', mixBlendMode: 'multiply' }} />
           <div style={{ width: 1, height: 36, background: 'var(--border)' }} />
           <div>
             <div style={{ fontSize: 18, fontWeight: 800, letterSpacing: '-0.01em' }}>
@@ -43,7 +43,7 @@ export default function App() {
         </div>
         <div style={{ textAlign: 'right', fontFamily: 'DM Mono, monospace', fontSize: 11, color: 'var(--muted)' }}>
           <div>Feb 01 – Feb 11, 2026</div>
-          <div style={{ marginTop: 4 }}>{summary ? `${(summary.total_datapoints / 1000).toFixed(0)}K data points` : '...'}</div>
+          <div style={{ marginTop: 4 }}>{summary ? `${(summary.total_datapoints / 1000).toFixed(0)}K registros` : '...'}</div>
         </div>
       </div>
 
@@ -61,14 +61,14 @@ export default function App() {
         <DayCompare />
       </div>
 
-      {/* Row 3 — Por hora + Por día semana + Insights */}
+      {/* Row 3 Insights */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 10, marginBottom: 12 }}>
         <HourlyChart />
         <WeekdayChart />
         <Insights summary={summary} byHour={byHour} byWeekday={byWeekday} />
       </div>
 
-      {/* Row 4 — Chatbot full width */}
+      {/* Row 4 — Chatbot */}
       <Chatbot />
 
     </div>

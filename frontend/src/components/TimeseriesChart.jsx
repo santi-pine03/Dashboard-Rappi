@@ -26,7 +26,7 @@ export default function TimeseriesChart() {
   useEffect(() => {
     fetchDates().then(d => {
       setDates(d.dates)
-      setSelected(d.dates[3] || d.dates[0]) // default Wed
+      setSelected(d.dates[3] || d.dates[0]) 
     })
   }, [])
 
@@ -48,9 +48,9 @@ export default function TimeseriesChart() {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
         <div>
           <div style={{ fontSize: 11, color: 'var(--muted)', letterSpacing: '0.12em', textTransform: 'uppercase', fontFamily: 'DM Mono, monospace', marginBottom: 4 }}>
-            Serie de tiempo — Tiendas online
+            Serie de tiempo — Tiendas online en un dia específico
           </div>
-          <div style={{ fontSize: 18, fontWeight: 700 }}>Disponibilidad por minuto</div>
+          <div style={{ fontSize: 18, fontWeight: 700 }}>Cantidad de tiendas disponibles vs hora</div>
         </div>
         <select
           value={selected}
